@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>6 Classification | Predictive modeling with text</title>
+  <meta name="description" content="6 Classification | Predictive modeling with text in R" />
+  <meta name="generator" content="bookdown 0.17.2 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="6 Classification | Predictive modeling with text" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="6 Classification | Predictive modeling with text in R" />
+  <meta name="github-repo" content="EmilHvitfeldt/tidy-nlp-in-R-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="6 Classification | Predictive modeling with text" />
+  
+  <meta name="twitter:description" content="6 Classification | Predictive modeling with text in R" />
+  
+
+<meta name="author" content="Emil Hvitfeldt and Julia Silge" />
+
+
+<meta name="date" content="2020-01-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="forewords.html"/>
+<link rel="next" href="regression.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NLP in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to Predictive Modeling with Text in R</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#outline"><i class="fa fa-check"></i>Outline</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#topics-this-book-will-not-cover"><i class="fa fa-check"></i>Topics this book will not cover</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#who-is-this-book-for"><i class="fa fa-check"></i>Who is this book for?</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#code"><i class="fa fa-check"></i>Code</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+</ul></li>
+<li class="part"><span><b>I Natural Language Features</b></span></li>
+<li class="chapter" data-level="1" data-path="language.html"><a href="language.html"><i class="fa fa-check"></i><b>1</b> Language and modeling</a><ul>
+<li class="chapter" data-level="1.1" data-path="language.html"><a href="language.html#linguistics-for-text-analysis"><i class="fa fa-check"></i><b>1.1</b> Linguistics for text analysis</a></li>
+<li class="chapter" data-level="1.2" data-path="language.html"><a href="language.html#a-glimpse-into-one-area-morphology"><i class="fa fa-check"></i><b>1.2</b> A glimpse into one area: morphology</a></li>
+<li class="chapter" data-level="1.3" data-path="language.html"><a href="language.html#different-languages"><i class="fa fa-check"></i><b>1.3</b> Different languages</a></li>
+<li class="chapter" data-level="1.4" data-path="language.html"><a href="language.html#other-ways-text-can-vary"><i class="fa fa-check"></i><b>1.4</b> Other ways text can vary</a></li>
+<li class="chapter" data-level="1.5" data-path="language.html"><a href="language.html#summary"><i class="fa fa-check"></i><b>1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tokenization.html"><a href="tokenization.html"><i class="fa fa-check"></i><b>2</b> Tokenization</a><ul>
+<li class="chapter" data-level="2.1" data-path="tokenization.html"><a href="tokenization.html#what-is-a-token"><i class="fa fa-check"></i><b>2.1</b> What is a token?</a></li>
+<li class="chapter" data-level="2.2" data-path="tokenization.html"><a href="tokenization.html#types-of-tokens"><i class="fa fa-check"></i><b>2.2</b> Types of tokens</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="tokenization.html"><a href="tokenization.html#character-tokens"><i class="fa fa-check"></i><b>2.2.1</b> Character tokens</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tokenization.html"><a href="tokenization.html#word-tokens"><i class="fa fa-check"></i><b>2.2.2</b> Word tokens</a></li>
+<li class="chapter" data-level="2.2.3" data-path="tokenization.html"><a href="tokenization.html#lines-sentence-and-paragraph-tokens"><i class="fa fa-check"></i><b>2.2.3</b> Lines, sentence, and paragraph tokens</a></li>
+<li class="chapter" data-level="2.2.4" data-path="tokenization.html"><a href="tokenization.html#tokenizing-by-n-grams"><i class="fa fa-check"></i><b>2.2.4</b> Tokenizing by n-grams</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="tokenization.html"><a href="tokenization.html#where-does-tokenization-break-down"><i class="fa fa-check"></i><b>2.3</b> Where does tokenization break down?</a></li>
+<li class="chapter" data-level="2.4" data-path="tokenization.html"><a href="tokenization.html#building-your-own-tokenizer"><i class="fa fa-check"></i><b>2.4</b> Building your own tokenizer</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="tokenization.html"><a href="tokenization.html#tokenize-to-characters-only-keeping-letters"><i class="fa fa-check"></i><b>2.4.1</b> Tokenize to characters, only keeping letters</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tokenization.html"><a href="tokenization.html#allow-for-hyphenated-words"><i class="fa fa-check"></i><b>2.4.2</b> Allow for hyphenated words</a></li>
+<li class="chapter" data-level="2.4.3" data-path="tokenization.html"><a href="tokenization.html#character-n-grams"><i class="fa fa-check"></i><b>2.4.3</b> Character n-grams</a></li>
+<li class="chapter" data-level="2.4.4" data-path="tokenization.html"><a href="tokenization.html#wrapping-it-into-a-function"><i class="fa fa-check"></i><b>2.4.4</b> Wrapping it into a function</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tokenization.html"><a href="tokenization.html#tokenization-benchmark"><i class="fa fa-check"></i><b>2.5</b> Tokenization benchmark</a></li>
+<li class="chapter" data-level="2.6" data-path="tokenization.html"><a href="tokenization.html#summary-1"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="stopwords.html"><a href="stopwords.html"><i class="fa fa-check"></i><b>3</b> Stop words</a><ul>
+<li class="chapter" data-level="3.1" data-path="stopwords.html"><a href="stopwords.html#using-premade-stop-word-lists"><i class="fa fa-check"></i><b>3.1</b> Using premade stop word lists</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="stopwords.html"><a href="stopwords.html#stop-word-removal-in-r"><i class="fa fa-check"></i><b>3.1.1</b> Stop word removal in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="stopwords.html"><a href="stopwords.html#creating-your-own-stop-words-list"><i class="fa fa-check"></i><b>3.2</b> Creating your own stop words list</a></li>
+<li class="chapter" data-level="3.3" data-path="stopwords.html"><a href="stopwords.html#all-stop-word-lists-are-context-specific"><i class="fa fa-check"></i><b>3.3</b> All stop word lists are context specific</a></li>
+<li class="chapter" data-level="3.4" data-path="stopwords.html"><a href="stopwords.html#what-happens-when-you-remove-stop-words"><i class="fa fa-check"></i><b>3.4</b> What happens when you remove stop words</a></li>
+<li class="chapter" data-level="3.5" data-path="stopwords.html"><a href="stopwords.html#stop-words-in-languages-other-than-english"><i class="fa fa-check"></i><b>3.5</b> Stop words in languages other than English</a></li>
+<li class="chapter" data-level="3.6" data-path="stopwords.html"><a href="stopwords.html#summary-2"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stemming.html"><a href="stemming.html"><i class="fa fa-check"></i><b>4</b> Stemming</a><ul>
+<li class="chapter" data-level="4.1" data-path="stemming.html"><a href="stemming.html#how-to-stem-text-in-r"><i class="fa fa-check"></i><b>4.1</b> How to stem text in R</a></li>
+<li class="chapter" data-level="4.2" data-path="stemming.html"><a href="stemming.html#should-you-use-stemming-at-all"><i class="fa fa-check"></i><b>4.2</b> Should you use stemming at all?</a></li>
+<li class="chapter" data-level="4.3" data-path="stemming.html"><a href="stemming.html#understand-a-stemming-algorithm"><i class="fa fa-check"></i><b>4.3</b> Understand a stemming algorithm</a></li>
+<li class="chapter" data-level="4.4" data-path="stemming.html"><a href="stemming.html#handling-punctuation-when-stemming"><i class="fa fa-check"></i><b>4.4</b> Handling punctuation when stemming</a></li>
+<li class="chapter" data-level="4.5" data-path="stemming.html"><a href="stemming.html#compare-some-stemming-options"><i class="fa fa-check"></i><b>4.5</b> Compare some stemming options</a></li>
+<li class="chapter" data-level="4.6" data-path="stemming.html"><a href="stemming.html#lemmatization-and-stemming"><i class="fa fa-check"></i><b>4.6</b> Lemmatization and stemming</a></li>
+<li class="chapter" data-level="4.7" data-path="stemming.html"><a href="stemming.html#stemming-and-stop-words"><i class="fa fa-check"></i><b>4.7</b> Stemming and stop words</a></li>
+<li class="chapter" data-level="4.8" data-path="stemming.html"><a href="stemming.html#summary-3"><i class="fa fa-check"></i><b>4.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="embeddings.html"><a href="embeddings.html"><i class="fa fa-check"></i><b>5</b> Word Embeddings</a><ul>
+<li class="chapter" data-level="5.1" data-path="embeddings.html"><a href="embeddings.html#understand-word-embeddings-by-finding-them-yourself"><i class="fa fa-check"></i><b>5.1</b> Understand word embeddings by finding them yourself</a></li>
+<li class="chapter" data-level="5.2" data-path="embeddings.html"><a href="embeddings.html#exploring-cfpb-word-embeddings"><i class="fa fa-check"></i><b>5.2</b> Exploring CFPB word embeddings</a></li>
+<li class="chapter" data-level="5.3" data-path="embeddings.html"><a href="embeddings.html#glove"><i class="fa fa-check"></i><b>5.3</b> Use pre-trained word embeddings</a></li>
+<li class="chapter" data-level="5.4" data-path="embeddings.html"><a href="embeddings.html#fairnessembeddings"><i class="fa fa-check"></i><b>5.4</b> Fairness and word embeddings</a></li>
+<li class="chapter" data-level="5.5" data-path="embeddings.html"><a href="embeddings.html#using-word-embeddings-in-the-real-world"><i class="fa fa-check"></i><b>5.5</b> Using word embeddings in the real world</a></li>
+<li class="chapter" data-level="5.6" data-path="embeddings.html"><a href="embeddings.html#summary-4"><i class="fa fa-check"></i><b>5.6</b> Summary</a></li>
+</ul></li>
+<li class="part"><span><b>II Machine Learning Methods</b></span></li>
+<li class="chapter" data-level="" data-path="forewords.html"><a href="forewords.html"><i class="fa fa-check"></i>Forewords</a></li>
+<li class="chapter" data-level="6" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>6</b> Classification</a><ul>
+<li class="chapter" data-level="6.1" data-path="classification.html"><a href="classification.html#first-attempt"><i class="fa fa-check"></i><b>6.1</b> First attempt</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="classification.html"><a href="classification.html#look-at-the-data"><i class="fa fa-check"></i><b>6.1.1</b> Look at the data</a></li>
+<li class="chapter" data-level="6.1.2" data-path="classification.html"><a href="classification.html#modeling"><i class="fa fa-check"></i><b>6.1.2</b> Modeling</a></li>
+<li class="chapter" data-level="6.1.3" data-path="classification.html"><a href="classification.html#evaluation"><i class="fa fa-check"></i><b>6.1.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="classification.html"><a href="classification.html#different-types-of-models"><i class="fa fa-check"></i><b>6.2</b> Different types of models</a></li>
+<li class="chapter" data-level="6.3" data-path="classification.html"><a href="classification.html#two-class-or-multiclass"><i class="fa fa-check"></i><b>6.3</b> Two class or multiclass</a></li>
+<li class="chapter" data-level="6.4" data-path="classification.html"><a href="classification.html#case-study-relationship-between-performace"><i class="fa fa-check"></i><b>6.4</b> Case study: relationship between performace</a></li>
+<li class="chapter" data-level="6.5" data-path="classification.html"><a href="classification.html#case-study-feature-hashing"><i class="fa fa-check"></i><b>6.5</b> Case Study: feature hashing</a></li>
+<li class="chapter" data-level="6.6" data-path="classification.html"><a href="classification.html#what-evaluation-metrics-are-appropiate"><i class="fa fa-check"></i><b>6.6</b> What evaluation metrics are appropiate</a></li>
+<li class="chapter" data-level="6.7" data-path="classification.html"><a href="classification.html#full-game"><i class="fa fa-check"></i><b>6.7</b> Full game</a><ul>
+<li class="chapter" data-level="6.7.1" data-path="classification.html"><a href="classification.html#feature-selection"><i class="fa fa-check"></i><b>6.7.1</b> Feature selection</a></li>
+<li class="chapter" data-level="6.7.2" data-path="classification.html"><a href="classification.html#splitting-the-data"><i class="fa fa-check"></i><b>6.7.2</b> Splitting the data</a></li>
+<li class="chapter" data-level="6.7.3" data-path="classification.html"><a href="classification.html#specifying-models"><i class="fa fa-check"></i><b>6.7.3</b> Specifying models</a></li>
+<li class="chapter" data-level="6.7.4" data-path="classification.html"><a href="classification.html#cross-validation"><i class="fa fa-check"></i><b>6.7.4</b> Cross-validation</a></li>
+<li class="chapter" data-level="6.7.5" data-path="classification.html"><a href="classification.html#evaluation-1"><i class="fa fa-check"></i><b>6.7.5</b> Evaluation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> Regression</a><ul>
+<li class="chapter" data-level="7.1" data-path="regression.html"><a href="regression.html#first-attempt-1"><i class="fa fa-check"></i><b>7.1</b> First attempt</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="regression.html"><a href="regression.html#look-at-the-data-1"><i class="fa fa-check"></i><b>7.1.1</b> Look at the data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#modeling-1"><i class="fa fa-check"></i><b>7.1.2</b> Modeling</a></li>
+<li class="chapter" data-level="7.1.3" data-path="regression.html"><a href="regression.html#evaluation-2"><i class="fa fa-check"></i><b>7.1.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="regression.html"><a href="regression.html#different-types-of-models-1"><i class="fa fa-check"></i><b>7.2</b> Different types of models</a></li>
+<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#case-study-varying-n-grams-stop-words"><i class="fa fa-check"></i><b>7.3</b> Case study: varying n-grams &amp; stop words</a></li>
+<li class="chapter" data-level="7.4" data-path="regression.html"><a href="regression.html#case-study-adding-custom-feature"><i class="fa fa-check"></i><b>7.4</b> Case study: Adding custom feature</a></li>
+<li class="chapter" data-level="7.5" data-path="regression.html"><a href="regression.html#what-evaluation-metrics-are-appropiate-1"><i class="fa fa-check"></i><b>7.5</b> What evaluation metrics are appropiate</a></li>
+<li class="chapter" data-level="7.6" data-path="regression.html"><a href="regression.html#full-game-1"><i class="fa fa-check"></i><b>7.6</b> Full game</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="regression.html"><a href="regression.html#feature-selection-1"><i class="fa fa-check"></i><b>7.6.1</b> Feature selection</a></li>
+<li class="chapter" data-level="7.6.2" data-path="regression.html"><a href="regression.html#splitting-the-data-1"><i class="fa fa-check"></i><b>7.6.2</b> Splitting the data</a></li>
+<li class="chapter" data-level="7.6.3" data-path="regression.html"><a href="regression.html#specifying-models-1"><i class="fa fa-check"></i><b>7.6.3</b> Specifying models</a></li>
+<li class="chapter" data-level="7.6.4" data-path="regression.html"><a href="regression.html#cross-validation-1"><i class="fa fa-check"></i><b>7.6.4</b> Cross-validation</a></li>
+<li class="chapter" data-level="7.6.5" data-path="regression.html"><a href="regression.html#evaluation-3"><i class="fa fa-check"></i><b>7.6.5</b> Evaluation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>8</b> Clustering</a></li>
+<li class="part"><span><b>III Deep Learning Methods</b></span></li>
+<li class="chapter" data-level="" data-path="forewords-1.html"><a href="forewords-1.html"><i class="fa fa-check"></i>Forewords</a></li>
+<li class="chapter" data-level="9" data-path="classification-1.html"><a href="classification-1.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification-1.html"><a href="classification-1.html#case-study-applying-the-wrong-model"><i class="fa fa-check"></i><b>9.1</b> Case Study: Applying the wrong model</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="regression-1.html"><a href="regression-1.html"><i class="fa fa-check"></i><b>10</b> Regression</a></li>
+<li class="chapter" data-level="11" data-path="clustering-1.html"><a href="clustering-1.html"><i class="fa fa-check"></i><b>11</b> Clustering</a></li>
+<li class="part"><span><b>IV Appendix</b></span></li>
+<li class="chapter" data-level="12" data-path="regexp.html"><a href="regexp.html"><i class="fa fa-check"></i><b>12</b> Regular expressions</a><ul>
+<li class="chapter" data-level="12.1" data-path="regexp.html"><a href="regexp.html#literal-characters"><i class="fa fa-check"></i><b>12.1</b> Literal characters</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="regexp.html"><a href="regexp.html#meta-characters"><i class="fa fa-check"></i><b>12.1.1</b> Meta characters</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="regexp.html"><a href="regexp.html#full-stop-the-wildcard"><i class="fa fa-check"></i><b>12.2</b> Full stop, the wildcard</a></li>
+<li class="chapter" data-level="12.3" data-path="regexp.html"><a href="regexp.html#character-classes"><i class="fa fa-check"></i><b>12.3</b> Character classes</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="regexp.html"><a href="regexp.html#shorthand-character-classes"><i class="fa fa-check"></i><b>12.3.1</b> Shorthand character classes</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="regexp.html"><a href="regexp.html#quantifiers"><i class="fa fa-check"></i><b>12.4</b> Quantifiers</a></li>
+<li class="chapter" data-level="12.5" data-path="regexp.html"><a href="regexp.html#anchors"><i class="fa fa-check"></i><b>12.5</b> Anchors</a></li>
+<li class="chapter" data-level="12.6" data-path="regexp.html"><a href="regexp.html#additional-resources"><i class="fa fa-check"></i><b>12.6</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a></li>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html"><i class="fa fa-check"></i>Data</a><ul>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html#hcandersenr"><i class="fa fa-check"></i>hcandersenr</a></li>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html#scotus"><i class="fa fa-check"></i>scotus</a></li>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html#github-issue"><i class="fa fa-check"></i>GitHub issue</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive modeling with text</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="classification" class="section level1">
+<h1><span class="header-section-number">6</span> Classification</h1>
+<p>What is classification.</p>
+<div id="first-attempt" class="section level2">
+<h2><span class="header-section-number">6.1</span> First attempt</h2>
+<p>first attempt and full game will use same data. First attempt might use a subset of the data to make the example easier to understand. and properly to give balanced dataset, which then later can be explored.</p>
+<div id="look-at-the-data" class="section level3">
+<h3><span class="header-section-number">6.1.1</span> Look at the data</h3>
+</div>
+<div id="modeling" class="section level3">
+<h3><span class="header-section-number">6.1.2</span> Modeling</h3>
+</div>
+<div id="evaluation" class="section level3">
+<h3><span class="header-section-number">6.1.3</span> Evaluation</h3>
+</div>
+</div>
+<div id="different-types-of-models" class="section level2">
+<h2><span class="header-section-number">6.2</span> Different types of models</h2>
+<p>(Not all of these models are good, but are used to show strenghs and weaknessed) - SVM - Naive Bayes - glmnet - Random forrest - knn - NULL model</p>
+</div>
+<div id="two-class-or-multiclass" class="section level2">
+<h2><span class="header-section-number">6.3</span> Two class or multiclass</h2>
+</div>
+<div id="case-study-relationship-between-performace" class="section level2">
+<h2><span class="header-section-number">6.4</span> Case study: relationship between performace</h2>
+</div>
+<div id="case-study-feature-hashing" class="section level2">
+<h2><span class="header-section-number">6.5</span> Case Study: feature hashing</h2>
+</div>
+<div id="what-evaluation-metrics-are-appropiate" class="section level2">
+<h2><span class="header-section-number">6.6</span> What evaluation metrics are appropiate</h2>
+<p>Data will most likely be sparse when using BoW</p>
+</div>
+<div id="full-game" class="section level2">
+<h2><span class="header-section-number">6.7</span> Full game</h2>
+<div id="feature-selection" class="section level3">
+<h3><span class="header-section-number">6.7.1</span> Feature selection</h3>
+</div>
+<div id="splitting-the-data" class="section level3">
+<h3><span class="header-section-number">6.7.2</span> Splitting the data</h3>
+</div>
+<div id="specifying-models" class="section level3">
+<h3><span class="header-section-number">6.7.3</span> Specifying models</h3>
+</div>
+<div id="cross-validation" class="section level3">
+<h3><span class="header-section-number">6.7.4</span> Cross-validation</h3>
+</div>
+<div id="evaluation-1" class="section level3">
+<h3><span class="header-section-number">6.7.5</span> Evaluation</h3>
+<p>Inteprebility.</p>
+<p>“Can we get comparable performance with a simpler model?” Compare with simple rule based model</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="forewords.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="regression.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/EmilHvitfeldt/tidy-nlp-in-R-book/edit/master/ml_classification.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 Word Embeddings | Predictive modeling with text</title>
+  <meta name="description" content="5 Word Embeddings | Predictive modeling with text in R" />
+  <meta name="generator" content="bookdown 0.17.2 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 Word Embeddings | Predictive modeling with text" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="5 Word Embeddings | Predictive modeling with text in R" />
+  <meta name="github-repo" content="EmilHvitfeldt/tidy-nlp-in-R-book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 Word Embeddings | Predictive modeling with text" />
+  
+  <meta name="twitter:description" content="5 Word Embeddings | Predictive modeling with text in R" />
+  
+
+<meta name="author" content="Emil Hvitfeldt and Julia Silge" />
+
+
+<meta name="date" content="2020-01-18" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="stemming.html"/>
+<link rel="next" href="forewords.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">NLP in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Welcome to Predictive Modeling with Text in R</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html"><i class="fa fa-check"></i>Preface</a><ul>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#outline"><i class="fa fa-check"></i>Outline</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#topics-this-book-will-not-cover"><i class="fa fa-check"></i>Topics this book will not cover</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#who-is-this-book-for"><i class="fa fa-check"></i>Who is this book for?</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#code"><i class="fa fa-check"></i>Code</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#data"><i class="fa fa-check"></i>Data</a></li>
+<li class="chapter" data-level="" data-path="preface.html"><a href="preface.html#acknowledgements"><i class="fa fa-check"></i>Acknowledgements</a></li>
+</ul></li>
+<li class="part"><span><b>I Natural Language Features</b></span></li>
+<li class="chapter" data-level="1" data-path="language.html"><a href="language.html"><i class="fa fa-check"></i><b>1</b> Language and modeling</a><ul>
+<li class="chapter" data-level="1.1" data-path="language.html"><a href="language.html#linguistics-for-text-analysis"><i class="fa fa-check"></i><b>1.1</b> Linguistics for text analysis</a></li>
+<li class="chapter" data-level="1.2" data-path="language.html"><a href="language.html#a-glimpse-into-one-area-morphology"><i class="fa fa-check"></i><b>1.2</b> A glimpse into one area: morphology</a></li>
+<li class="chapter" data-level="1.3" data-path="language.html"><a href="language.html#different-languages"><i class="fa fa-check"></i><b>1.3</b> Different languages</a></li>
+<li class="chapter" data-level="1.4" data-path="language.html"><a href="language.html#other-ways-text-can-vary"><i class="fa fa-check"></i><b>1.4</b> Other ways text can vary</a></li>
+<li class="chapter" data-level="1.5" data-path="language.html"><a href="language.html#summary"><i class="fa fa-check"></i><b>1.5</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="tokenization.html"><a href="tokenization.html"><i class="fa fa-check"></i><b>2</b> Tokenization</a><ul>
+<li class="chapter" data-level="2.1" data-path="tokenization.html"><a href="tokenization.html#what-is-a-token"><i class="fa fa-check"></i><b>2.1</b> What is a token?</a></li>
+<li class="chapter" data-level="2.2" data-path="tokenization.html"><a href="tokenization.html#types-of-tokens"><i class="fa fa-check"></i><b>2.2</b> Types of tokens</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="tokenization.html"><a href="tokenization.html#character-tokens"><i class="fa fa-check"></i><b>2.2.1</b> Character tokens</a></li>
+<li class="chapter" data-level="2.2.2" data-path="tokenization.html"><a href="tokenization.html#word-tokens"><i class="fa fa-check"></i><b>2.2.2</b> Word tokens</a></li>
+<li class="chapter" data-level="2.2.3" data-path="tokenization.html"><a href="tokenization.html#lines-sentence-and-paragraph-tokens"><i class="fa fa-check"></i><b>2.2.3</b> Lines, sentence, and paragraph tokens</a></li>
+<li class="chapter" data-level="2.2.4" data-path="tokenization.html"><a href="tokenization.html#tokenizing-by-n-grams"><i class="fa fa-check"></i><b>2.2.4</b> Tokenizing by n-grams</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="tokenization.html"><a href="tokenization.html#where-does-tokenization-break-down"><i class="fa fa-check"></i><b>2.3</b> Where does tokenization break down?</a></li>
+<li class="chapter" data-level="2.4" data-path="tokenization.html"><a href="tokenization.html#building-your-own-tokenizer"><i class="fa fa-check"></i><b>2.4</b> Building your own tokenizer</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="tokenization.html"><a href="tokenization.html#tokenize-to-characters-only-keeping-letters"><i class="fa fa-check"></i><b>2.4.1</b> Tokenize to characters, only keeping letters</a></li>
+<li class="chapter" data-level="2.4.2" data-path="tokenization.html"><a href="tokenization.html#allow-for-hyphenated-words"><i class="fa fa-check"></i><b>2.4.2</b> Allow for hyphenated words</a></li>
+<li class="chapter" data-level="2.4.3" data-path="tokenization.html"><a href="tokenization.html#character-n-grams"><i class="fa fa-check"></i><b>2.4.3</b> Character n-grams</a></li>
+<li class="chapter" data-level="2.4.4" data-path="tokenization.html"><a href="tokenization.html#wrapping-it-into-a-function"><i class="fa fa-check"></i><b>2.4.4</b> Wrapping it into a function</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="tokenization.html"><a href="tokenization.html#tokenization-benchmark"><i class="fa fa-check"></i><b>2.5</b> Tokenization benchmark</a></li>
+<li class="chapter" data-level="2.6" data-path="tokenization.html"><a href="tokenization.html#summary-1"><i class="fa fa-check"></i><b>2.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="stopwords.html"><a href="stopwords.html"><i class="fa fa-check"></i><b>3</b> Stop words</a><ul>
+<li class="chapter" data-level="3.1" data-path="stopwords.html"><a href="stopwords.html#using-premade-stop-word-lists"><i class="fa fa-check"></i><b>3.1</b> Using premade stop word lists</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="stopwords.html"><a href="stopwords.html#stop-word-removal-in-r"><i class="fa fa-check"></i><b>3.1.1</b> Stop word removal in R</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="stopwords.html"><a href="stopwords.html#creating-your-own-stop-words-list"><i class="fa fa-check"></i><b>3.2</b> Creating your own stop words list</a></li>
+<li class="chapter" data-level="3.3" data-path="stopwords.html"><a href="stopwords.html#all-stop-word-lists-are-context-specific"><i class="fa fa-check"></i><b>3.3</b> All stop word lists are context specific</a></li>
+<li class="chapter" data-level="3.4" data-path="stopwords.html"><a href="stopwords.html#what-happens-when-you-remove-stop-words"><i class="fa fa-check"></i><b>3.4</b> What happens when you remove stop words</a></li>
+<li class="chapter" data-level="3.5" data-path="stopwords.html"><a href="stopwords.html#stop-words-in-languages-other-than-english"><i class="fa fa-check"></i><b>3.5</b> Stop words in languages other than English</a></li>
+<li class="chapter" data-level="3.6" data-path="stopwords.html"><a href="stopwords.html#summary-2"><i class="fa fa-check"></i><b>3.6</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="stemming.html"><a href="stemming.html"><i class="fa fa-check"></i><b>4</b> Stemming</a><ul>
+<li class="chapter" data-level="4.1" data-path="stemming.html"><a href="stemming.html#how-to-stem-text-in-r"><i class="fa fa-check"></i><b>4.1</b> How to stem text in R</a></li>
+<li class="chapter" data-level="4.2" data-path="stemming.html"><a href="stemming.html#should-you-use-stemming-at-all"><i class="fa fa-check"></i><b>4.2</b> Should you use stemming at all?</a></li>
+<li class="chapter" data-level="4.3" data-path="stemming.html"><a href="stemming.html#understand-a-stemming-algorithm"><i class="fa fa-check"></i><b>4.3</b> Understand a stemming algorithm</a></li>
+<li class="chapter" data-level="4.4" data-path="stemming.html"><a href="stemming.html#handling-punctuation-when-stemming"><i class="fa fa-check"></i><b>4.4</b> Handling punctuation when stemming</a></li>
+<li class="chapter" data-level="4.5" data-path="stemming.html"><a href="stemming.html#compare-some-stemming-options"><i class="fa fa-check"></i><b>4.5</b> Compare some stemming options</a></li>
+<li class="chapter" data-level="4.6" data-path="stemming.html"><a href="stemming.html#lemmatization-and-stemming"><i class="fa fa-check"></i><b>4.6</b> Lemmatization and stemming</a></li>
+<li class="chapter" data-level="4.7" data-path="stemming.html"><a href="stemming.html#stemming-and-stop-words"><i class="fa fa-check"></i><b>4.7</b> Stemming and stop words</a></li>
+<li class="chapter" data-level="4.8" data-path="stemming.html"><a href="stemming.html#summary-3"><i class="fa fa-check"></i><b>4.8</b> Summary</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="embeddings.html"><a href="embeddings.html"><i class="fa fa-check"></i><b>5</b> Word Embeddings</a><ul>
+<li class="chapter" data-level="5.1" data-path="embeddings.html"><a href="embeddings.html#understand-word-embeddings-by-finding-them-yourself"><i class="fa fa-check"></i><b>5.1</b> Understand word embeddings by finding them yourself</a></li>
+<li class="chapter" data-level="5.2" data-path="embeddings.html"><a href="embeddings.html#exploring-cfpb-word-embeddings"><i class="fa fa-check"></i><b>5.2</b> Exploring CFPB word embeddings</a></li>
+<li class="chapter" data-level="5.3" data-path="embeddings.html"><a href="embeddings.html#glove"><i class="fa fa-check"></i><b>5.3</b> Use pre-trained word embeddings</a></li>
+<li class="chapter" data-level="5.4" data-path="embeddings.html"><a href="embeddings.html#fairnessembeddings"><i class="fa fa-check"></i><b>5.4</b> Fairness and word embeddings</a></li>
+<li class="chapter" data-level="5.5" data-path="embeddings.html"><a href="embeddings.html#using-word-embeddings-in-the-real-world"><i class="fa fa-check"></i><b>5.5</b> Using word embeddings in the real world</a></li>
+<li class="chapter" data-level="5.6" data-path="embeddings.html"><a href="embeddings.html#summary-4"><i class="fa fa-check"></i><b>5.6</b> Summary</a></li>
+</ul></li>
+<li class="part"><span><b>II Machine Learning Methods</b></span></li>
+<li class="chapter" data-level="" data-path="forewords.html"><a href="forewords.html"><i class="fa fa-check"></i>Forewords</a></li>
+<li class="chapter" data-level="6" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>6</b> Classification</a><ul>
+<li class="chapter" data-level="6.1" data-path="classification.html"><a href="classification.html#first-attempt"><i class="fa fa-check"></i><b>6.1</b> First attempt</a><ul>
+<li class="chapter" data-level="6.1.1" data-path="classification.html"><a href="classification.html#look-at-the-data"><i class="fa fa-check"></i><b>6.1.1</b> Look at the data</a></li>
+<li class="chapter" data-level="6.1.2" data-path="classification.html"><a href="classification.html#modeling"><i class="fa fa-check"></i><b>6.1.2</b> Modeling</a></li>
+<li class="chapter" data-level="6.1.3" data-path="classification.html"><a href="classification.html#evaluation"><i class="fa fa-check"></i><b>6.1.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="classification.html"><a href="classification.html#different-types-of-models"><i class="fa fa-check"></i><b>6.2</b> Different types of models</a></li>
+<li class="chapter" data-level="6.3" data-path="classification.html"><a href="classification.html#two-class-or-multiclass"><i class="fa fa-check"></i><b>6.3</b> Two class or multiclass</a></li>
+<li class="chapter" data-level="6.4" data-path="classification.html"><a href="classification.html#case-study-relationship-between-performace"><i class="fa fa-check"></i><b>6.4</b> Case study: relationship between performace</a></li>
+<li class="chapter" data-level="6.5" data-path="classification.html"><a href="classification.html#case-study-feature-hashing"><i class="fa fa-check"></i><b>6.5</b> Case Study: feature hashing</a></li>
+<li class="chapter" data-level="6.6" data-path="classification.html"><a href="classification.html#what-evaluation-metrics-are-appropiate"><i class="fa fa-check"></i><b>6.6</b> What evaluation metrics are appropiate</a></li>
+<li class="chapter" data-level="6.7" data-path="classification.html"><a href="classification.html#full-game"><i class="fa fa-check"></i><b>6.7</b> Full game</a><ul>
+<li class="chapter" data-level="6.7.1" data-path="classification.html"><a href="classification.html#feature-selection"><i class="fa fa-check"></i><b>6.7.1</b> Feature selection</a></li>
+<li class="chapter" data-level="6.7.2" data-path="classification.html"><a href="classification.html#splitting-the-data"><i class="fa fa-check"></i><b>6.7.2</b> Splitting the data</a></li>
+<li class="chapter" data-level="6.7.3" data-path="classification.html"><a href="classification.html#specifying-models"><i class="fa fa-check"></i><b>6.7.3</b> Specifying models</a></li>
+<li class="chapter" data-level="6.7.4" data-path="classification.html"><a href="classification.html#cross-validation"><i class="fa fa-check"></i><b>6.7.4</b> Cross-validation</a></li>
+<li class="chapter" data-level="6.7.5" data-path="classification.html"><a href="classification.html#evaluation-1"><i class="fa fa-check"></i><b>6.7.5</b> Evaluation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="regression.html"><a href="regression.html"><i class="fa fa-check"></i><b>7</b> Regression</a><ul>
+<li class="chapter" data-level="7.1" data-path="regression.html"><a href="regression.html#first-attempt-1"><i class="fa fa-check"></i><b>7.1</b> First attempt</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="regression.html"><a href="regression.html#look-at-the-data-1"><i class="fa fa-check"></i><b>7.1.1</b> Look at the data</a></li>
+<li class="chapter" data-level="7.1.2" data-path="regression.html"><a href="regression.html#modeling-1"><i class="fa fa-check"></i><b>7.1.2</b> Modeling</a></li>
+<li class="chapter" data-level="7.1.3" data-path="regression.html"><a href="regression.html#evaluation-2"><i class="fa fa-check"></i><b>7.1.3</b> Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="regression.html"><a href="regression.html#different-types-of-models-1"><i class="fa fa-check"></i><b>7.2</b> Different types of models</a></li>
+<li class="chapter" data-level="7.3" data-path="regression.html"><a href="regression.html#case-study-varying-n-grams-stop-words"><i class="fa fa-check"></i><b>7.3</b> Case study: varying n-grams &amp; stop words</a></li>
+<li class="chapter" data-level="7.4" data-path="regression.html"><a href="regression.html#case-study-adding-custom-feature"><i class="fa fa-check"></i><b>7.4</b> Case study: Adding custom feature</a></li>
+<li class="chapter" data-level="7.5" data-path="regression.html"><a href="regression.html#what-evaluation-metrics-are-appropiate-1"><i class="fa fa-check"></i><b>7.5</b> What evaluation metrics are appropiate</a></li>
+<li class="chapter" data-level="7.6" data-path="regression.html"><a href="regression.html#full-game-1"><i class="fa fa-check"></i><b>7.6</b> Full game</a><ul>
+<li class="chapter" data-level="7.6.1" data-path="regression.html"><a href="regression.html#feature-selection-1"><i class="fa fa-check"></i><b>7.6.1</b> Feature selection</a></li>
+<li class="chapter" data-level="7.6.2" data-path="regression.html"><a href="regression.html#splitting-the-data-1"><i class="fa fa-check"></i><b>7.6.2</b> Splitting the data</a></li>
+<li class="chapter" data-level="7.6.3" data-path="regression.html"><a href="regression.html#specifying-models-1"><i class="fa fa-check"></i><b>7.6.3</b> Specifying models</a></li>
+<li class="chapter" data-level="7.6.4" data-path="regression.html"><a href="regression.html#cross-validation-1"><i class="fa fa-check"></i><b>7.6.4</b> Cross-validation</a></li>
+<li class="chapter" data-level="7.6.5" data-path="regression.html"><a href="regression.html#evaluation-3"><i class="fa fa-check"></i><b>7.6.5</b> Evaluation</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>8</b> Clustering</a></li>
+<li class="part"><span><b>III Deep Learning Methods</b></span></li>
+<li class="chapter" data-level="" data-path="forewords-1.html"><a href="forewords-1.html"><i class="fa fa-check"></i>Forewords</a></li>
+<li class="chapter" data-level="9" data-path="classification-1.html"><a href="classification-1.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification-1.html"><a href="classification-1.html#case-study-applying-the-wrong-model"><i class="fa fa-check"></i><b>9.1</b> Case Study: Applying the wrong model</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="regression-1.html"><a href="regression-1.html"><i class="fa fa-check"></i><b>10</b> Regression</a></li>
+<li class="chapter" data-level="11" data-path="clustering-1.html"><a href="clustering-1.html"><i class="fa fa-check"></i><b>11</b> Clustering</a></li>
+<li class="part"><span><b>IV Appendix</b></span></li>
+<li class="chapter" data-level="12" data-path="regexp.html"><a href="regexp.html"><i class="fa fa-check"></i><b>12</b> Regular expressions</a><ul>
+<li class="chapter" data-level="12.1" data-path="regexp.html"><a href="regexp.html#literal-characters"><i class="fa fa-check"></i><b>12.1</b> Literal characters</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="regexp.html"><a href="regexp.html#meta-characters"><i class="fa fa-check"></i><b>12.1.1</b> Meta characters</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="regexp.html"><a href="regexp.html#full-stop-the-wildcard"><i class="fa fa-check"></i><b>12.2</b> Full stop, the wildcard</a></li>
+<li class="chapter" data-level="12.3" data-path="regexp.html"><a href="regexp.html#character-classes"><i class="fa fa-check"></i><b>12.3</b> Character classes</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="regexp.html"><a href="regexp.html#shorthand-character-classes"><i class="fa fa-check"></i><b>12.3.1</b> Shorthand character classes</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="regexp.html"><a href="regexp.html#quantifiers"><i class="fa fa-check"></i><b>12.4</b> Quantifiers</a></li>
+<li class="chapter" data-level="12.5" data-path="regexp.html"><a href="regexp.html#anchors"><i class="fa fa-check"></i><b>12.5</b> Anchors</a></li>
+<li class="chapter" data-level="12.6" data-path="regexp.html"><a href="regexp.html#additional-resources"><i class="fa fa-check"></i><b>12.6</b> Additional resources</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="software.html"><a href="software.html"><i class="fa fa-check"></i>Software</a></li>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html"><i class="fa fa-check"></i>Data</a><ul>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html#hcandersenr"><i class="fa fa-check"></i>hcandersenr</a></li>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html#scotus"><i class="fa fa-check"></i>scotus</a></li>
+<li class="chapter" data-level="" data-path="appendixdata.html"><a href="appendixdata.html#github-issue"><i class="fa fa-check"></i>GitHub issue</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Predictive modeling with text</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="embeddings" class="section level1">
+<h1><span class="header-section-number">5</span> Word Embeddings</h1>
+<blockquote>
+You shall know a word by the company it keeps.
+<footer>
+— <a href="https://en.wikiquote.org/wiki/John_Rupert_Firth">John Rupert Firth</a>
+</footer>
+</blockquote>
+<p>So far in our discussion of natural language features, we have discussed preprocessing steps such as tokenization, removing stop words, and stemming in detail. We implement these types of preprocessing steps to be able to represent our text data in some data structure that is a good fit for modeling. An example of such a data structure is a sparse matrix. Perhaps, if we wanted to analyse or build a model for consumer complaints to the <a href="https://www.consumerfinance.gov/data-research/consumer-complaints/">United States Consumer Financial Protection Bureau (CFPB)</a>, we would start with straightforward word counts.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(tidyverse)
+<span class="kw">library</span>(tidytext)
+<span class="kw">library</span>(SnowballC)
+
+complaints &lt;-<span class="st"> </span><span class="kw">read_csv</span>(<span class="st">&quot;data/complaints.csv.gz&quot;</span>)
+
+complaints <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unnest_tokens</span>(word, consumer_complaint_narrative) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">anti_join</span>(<span class="kw">get_stopwords</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">stem =</span> <span class="kw">wordStem</span>(word)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(complaint_id, stem) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">cast_dfm</span>(complaint_id, stem, n)</code></pre></div>
+<pre><code>## Document-feature matrix of: 117,214 documents, 46,099 features (99.9% sparse).</code></pre>
+<p>The dataset of consumer complaints used in this book has been filtered to those submitted to the CFPB since 1 January 2019 that include a consumer complaint narrative (i.e., some submitted text).</p>
+<p>Another way to represent our text data is to use <a href="https://www.tidytextmining.com/tfidf.html">tf-idf</a> instead of word counts. This weighting for text features can often work better in predictive modeling.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">complaints <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unnest_tokens</span>(word, consumer_complaint_narrative) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">anti_join</span>(<span class="kw">get_stopwords</span>()) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">stem =</span> <span class="kw">wordStem</span>(word)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">count</span>(complaint_id, stem) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">bind_tf_idf</span>(stem, complaint_id, n) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">cast_dfm</span>(complaint_id, stem, tf_idf)</code></pre></div>
+<pre><code>## Document-feature matrix of: 117,214 documents, 46,099 features (99.9% sparse).</code></pre>
+<p>Notice that in either case, our final data structure is incredibly sparse and of high dimensionality with a huge number of features. Some modeling algorithms and the libraries which implement them can take advantage of the memory characteristics of sparse matrices for better performance; an example of this is regularized regression implemented in <strong>glmnet</strong>. Some modeling algorithms, including tree-based algorithms, do not perform better with sparse input, and then some libraries are not built to take advantage of sparse data structures, even if it would improve performance for those algorithms.</p>
+<div id="sparse-vs.-non-sparse-matrix-diagram-goes-here" class="section level4">
+<h4><span class="header-section-number">5.0.0.1</span> SPARSE VS. NON SPARSE MATRIX DIAGRAM GOES HERE</h4>
+<p>Linguists have long worked on vector models for language that can reduce the number of dimensions representing text data based on how people use language; the quote that opened this chapter dates to 1957. These kinds of dense word vectors are often called <strong>word embeddings</strong>.</p>
+</div>
+<div id="understand-word-embeddings-by-finding-them-yourself" class="section level2">
+<h2><span class="header-section-number">5.1</span> Understand word embeddings by finding them yourself</h2>
+<p>Word embeddings are a way to represent text data as numbers based on a huge corpus of text, capturing semantic meaning from words’ context.</p>
+<div class="rmdnote">
+<p>
+Modern word embeddings are based on a statistical approach to modeling language, rather than a linguistics or rules-based approach.
+</p>
+</div>
+<p>We can determine these vectors for a corpus of text using word counts and matrix factorization, as outlined by <span class="citation">Moody (<a href="#ref-Moody2017">2017</a>)</span>. This approach is valuable because it allows practitioners to find word vectors for their own collections of text (with no need to rely on pre-trained vectors) using familiar techniques that are not difficult to understand. Let’s walk through how to do this using tidy data principles and sparse matrices, on the dataset of CFPB complaints. First, let’s filter out words that are used only rarely in this dataset and create a nested dataframe, with one row per complaint.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nested_words &lt;-<span class="st"> </span>complaints <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(complaint_id, consumer_complaint_narrative) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unnest_tokens</span>(word, consumer_complaint_narrative) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">add_count</span>(word) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(n <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(<span class="op">-</span>n) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">nest</span>(<span class="dt">words =</span> <span class="kw">c</span>(word))
+
+nested_words</code></pre></div>
+<pre><code>## # A tibble: 117,170 x 2
+##    complaint_id          words
+##           &lt;dbl&gt; &lt;list&lt;df[,1]&gt;&gt;
+##  1      3384392       [18 × 1]
+##  2      3417821       [71 × 1]
+##  3      3433198       [77 × 1]
+##  4      3366475       [69 × 1]
+##  5      3385399      [213 × 1]
+##  6      3444592       [19 × 1]
+##  7      3379924      [121 × 1]
+##  8      3446975       [22 × 1]
+##  9      3214857       [64 × 1]
+## 10      3417374       [44 × 1]
+## # … with 117,160 more rows</code></pre>
+<p>Next, let’s create a <code>slide_windows()</code> function, using the <code>slide()</code> function from the <strong>slide</strong> package <span class="citation">(Vaughan <a href="#ref-Vaughan2020">2020</a>)</span> which implements fast sliding window computations written in C. Our new function identifies skipgram windows in order to calculate the skipgram probabilities, how often we find each word near each other word. We do this by defining a fixed-size moving window that centers around each word. Do we see <code>word1</code> and <code>word2</code> together within this window? We can calculate probabilities based on when we do or do not.</p>
+<p>One of the arguments to this function is the <code>window_size</code>, which determines the size of the sliding window that moves through the text, counting up words that we find within the window. The best choice for this window size depends on your analytical question because it determines what kind of semantic meaning the embeddings capture. A smaller window size, like three or four, focuses on how the word is used and learns what other words are functionally similar. A larger window size, like ten, captures more information about the domain or topic of each word, not constrained by how functionally similar the words are <span class="citation">(Levy and Goldberg <a href="#ref-Levy2014">2014</a>)</span>. A smaller window size is also faster to compute.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">slide_windows &lt;-<span class="st"> </span><span class="cf">function</span>(tbl, window_size) {
+  skipgrams &lt;-<span class="st"> </span>slide<span class="op">::</span><span class="kw">slide</span>(
+    tbl,
+    <span class="op">~</span>.x,
+    <span class="dt">.after =</span> window_size <span class="op">-</span><span class="st"> </span><span class="dv">1</span>,
+    <span class="dt">.step =</span> <span class="dv">1</span>,
+    <span class="dt">.complete =</span> <span class="ot">TRUE</span>
+  )
+
+  safe_mutate &lt;-<span class="st"> </span><span class="kw">safely</span>(mutate)
+
+  out &lt;-<span class="st"> </span><span class="kw">map2</span>(
+    skipgrams,
+    <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(skipgrams),
+    <span class="op">~</span><span class="st"> </span><span class="kw">safe_mutate</span>(.x, <span class="dt">window_id =</span> .y)
+  )
+
+  out <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">transpose</span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">pluck</span>(<span class="st">&quot;result&quot;</span>) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">compact</span>() <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">bind_rows</span>()
+}</code></pre></div>
+<p>Now that we can find all the skipgram windows, we can calculate how often words occur on their own, and how often words occur together with other words. We do this using the point-wise mutual information (PMI), a measure of association that measures exactly what we described in the previous sentence; it’s the logarithm of the probability of finding two words together, normalized for the probability of finding each of the words alone. We use PMI to measure which words occur together more often than expected based on how often they occurred on their own.</p>
+<p>For this example, let’s use a window size of <strong>four</strong>.</p>
+<div class="rmdnote">
+<p>
+This next step is the computationally expensive part of finding word embeddings with this method, and can take a while to run. Fortunately, we can use the <strong>furrr</strong> package <span class="citation"><span class="citation">(Vaughan and Dancho <a href="#ref-Vaughan2018">2018</a>)</span></span> to take advantage of parallel processing because identifying skipgram windows in one document is independent from all the other documents.
+</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(widyr)
+<span class="kw">library</span>(furrr)
+
+<span class="kw">plan</span>(multiprocess) ## for parallel processing
+
+tidy_pmi &lt;-<span class="st"> </span>nested_words <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">words =</span> <span class="kw">future_map</span>(words, slide_windows, <span class="dv">4</span>,
+    <span class="dt">.progress =</span> <span class="ot">TRUE</span>
+  )) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unnest</span>(words) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">unite</span>(window_id, complaint_id, window_id) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">pairwise_pmi</span>(word, window_id)
+
+tidy_pmi</code></pre></div>
+<pre><code>## # A tibble: 4,818,402 x 3
+##    item1   item2           pmi
+##    &lt;chr&gt;   &lt;chr&gt;         &lt;dbl&gt;
+##  1 systems transworld  7.09   
+##  2 inc     transworld  5.96   
+##  3 is      transworld -0.135  
+##  4 trying  transworld -0.107  
+##  5 to      transworld -0.00206
+##  6 collect transworld  1.07   
+##  7 a       transworld -0.516  
+##  8 debt    transworld  0.919  
+##  9 that    transworld -0.542  
+## 10 not     transworld -1.17   
+## # … with 4,818,392 more rows</code></pre>
+<p>When PMI is high, the two words are associated with each other, likely to occur together. When PMI is low, the two words are not associated with each other, unlikely to occur together.</p>
+<div class="rmdtip">
+<p>
+The step above used <code>unite()</code>, a function from <strong>tidyr</strong> that pastes multiple columns into one, to make a new column for <code>window_id</code> from the old <code>window_id</code> plus the <code>complaint_id</code>. This new column tells us which combination of window and complaint each word belongs to.
+</p>
+</div>
+<p>We can next determine the word vectors from the PMI values using singular value decomposition. Let’s use the <code>widely_svd()</code> function in <strong>widyr</strong>, creating 100-dimensional word embeddings. This matrix factorization is much faster than the previous step of identifying the skipgram windows and calculating PMI.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_word_vectors &lt;-<span class="st"> </span>tidy_pmi <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">widely_svd</span>(
+    item1, item2, pmi,
+    <span class="dt">nv =</span> <span class="dv">100</span>, <span class="dt">maxit =</span> <span class="dv">1000</span>
+  )
+
+tidy_word_vectors</code></pre></div>
+<pre><code>## # A tibble: 747,500 x 3
+##    item1   dimension   value
+##    &lt;chr&gt;       &lt;int&gt;   &lt;dbl&gt;
+##  1 systems         1 0.0165 
+##  2 inc             1 0.0191 
+##  3 is              1 0.0202 
+##  4 trying          1 0.0423 
+##  5 to              1 0.00904
+##  6 collect         1 0.0370 
+##  7 a               1 0.0126 
+##  8 debt            1 0.0430 
+##  9 that            1 0.0136 
+## 10 not             1 0.0213 
+## # … with 747,490 more rows</code></pre>
+<p>We have now successfully found word embeddings, with clear and understandable code. This is a real benefit of this approach; this approach is based on counting, dividing, and matrix decomposition and is thus easier to understand and implement than options based on deep learning. Training word vectors or embeddings, even with this straightforward method, still requires a large dataset (ideally, hundreds of thousands of documents or more) and a not insignificant investment of time and computational power.</p>
+</div>
+<div id="exploring-cfpb-word-embeddings" class="section level2">
+<h2><span class="header-section-number">5.2</span> Exploring CFPB word embeddings</h2>
+<p>Now that we have determined word embeddings for the dataset of CFPB complaints, let’s explore them and talk about they are used in modeling. We have projected the sparse, high-dimensional set of word features into a more dense, 100-dimensional set of features.</p>
+<div class="rmdnote">
+<p>
+Each word can be represented as a numeric vector in this new feature space.
+</p>
+</div>
+<p>Which words are close to each other in this new feature space of word embeddings? Let’s create a simple function that will find the nearest synonyms using our newly created word embeddings.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">nearest_synonyms &lt;-<span class="st"> </span><span class="cf">function</span>(df, token) {
+  df <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">widely</span>(<span class="op">~</span><span class="st"> </span>. <span class="op">%*%</span><span class="st"> </span>(.[token, ]), <span class="dt">sort =</span> <span class="ot">TRUE</span>)(item1, dimension, value) <span class="op">%&gt;%</span>
+<span class="st">    </span><span class="kw">select</span>(<span class="op">-</span>item2)
+}</code></pre></div>
+<p>This function takes the tidy word embeddings as input, along with a word (or <code>token</code>) as a string. It uses matrix multiplication to find which words are closer or farther to the input word, and returns a dataframe sorted by similarity.</p>
+<p>What words are closest to <code>&quot;error&quot;</code> in the dataset of CFPB complaints, as determined by our word embeddings?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_word_vectors <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">nearest_synonyms</span>(<span class="st">&quot;error&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 7,475 x 2
+##    item1      value
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 error     0.0373
+##  2 issue     0.0237
+##  3 problem   0.0235
+##  4 issues    0.0194
+##  5 errors    0.0187
+##  6 mistake   0.0185
+##  7 system    0.0170
+##  8 problems  0.0151
+##  9 late      0.0141
+## 10 situation 0.0138
+## # … with 7,465 more rows</code></pre>
+<p>Errors, problems, issues, mistakes – sounds bad!</p>
+<p>What is closest to the word <code>&quot;month&quot;</code>?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_word_vectors <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">nearest_synonyms</span>(<span class="st">&quot;month&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 7,475 x 2
+##    item1     value
+##    &lt;chr&gt;     &lt;dbl&gt;
+##  1 month    0.0597
+##  2 payment  0.0407
+##  3 months   0.0355
+##  4 payments 0.0325
+##  5 year     0.0314
+##  6 days     0.0274
+##  7 balance  0.0267
+##  8 xx       0.0265
+##  9 years    0.0262
+## 10 monthly  0.0260
+## # … with 7,465 more rows</code></pre>
+<p>We see words about payments, along with other time periods such as days and years. Notice that we did not stem this text data (see Chapter <a href="stemming.html#stemming">4</a>) but the word embeddings learned that singular and plural forms of words belong together.</p>
+<p>What words are closest in this embedding space to <code>&quot;fee&quot;</code>?</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_word_vectors <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">nearest_synonyms</span>(<span class="st">&quot;fee&quot;</span>)</code></pre></div>
+<pre><code>## # A tibble: 7,475 x 2
+##    item1      value
+##    &lt;chr&gt;      &lt;dbl&gt;
+##  1 fee       0.0762
+##  2 fees      0.0605
+##  3 charge    0.0421
+##  4 interest  0.0410
+##  5 charged   0.0387
+##  6 late      0.0377
+##  7 charges   0.0366
+##  8 overdraft 0.0327
+##  9 charging  0.0246
+## 10 month     0.0220
+## # … with 7,465 more rows</code></pre>
+<p>We find words about interest, charges, and overdrafts.</p>
+<p>Since we have found word embeddings via singular value decomposition, we can use these vectors to understand what principal components explain the most variation in the CFPB complaints.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tidy_word_vectors <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">filter</span>(dimension <span class="op">&lt;=</span><span class="st"> </span><span class="dv">24</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">group_by</span>(dimension) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">top_n</span>(<span class="dv">12</span>, <span class="kw">abs</span>(value)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ungroup</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">item1 =</span> <span class="kw">reorder_within</span>(item1, value, dimension)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(item1, value, <span class="dt">fill =</span> <span class="kw">as.factor</span>(dimension))) <span class="op">+</span>
+<span class="st">  </span><span class="kw">geom_col</span>(<span class="dt">show.legend =</span> <span class="ot">FALSE</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>dimension, <span class="dt">scales =</span> <span class="st">&quot;free_y&quot;</span>, <span class="dt">ncol =</span> <span class="dv">4</span>) <span class="op">+</span>
+<span class="st">  </span><span class="kw">scale_x_reordered</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">coord_flip</span>() <span class="op">+</span>
+<span class="st">  </span><span class="kw">labs</span>(
+    <span class="dt">x =</span> <span class="ot">NULL</span>, <span class="dt">y =</span> <span class="st">&quot;Value&quot;</span>,
+    <span class="dt">title =</span> <span class="st">&quot;First 24 principal components for text of CFPB complaints&quot;</span>,
+    <span class="dt">subtitle =</span> <span class="st">&quot;Top words contributing to the components that explain the most variation&quot;</span>
+  )</code></pre></div>
+<div class="figure"><span id="fig:embeddingpca"></span>
+<img src="word-embeddings_files/figure-html/embeddingpca-1.png" alt="Word embeddings for Consumer Finance Protection Bureau complaints" width="768" />
+<p class="caption">
+Figure 5.1: Word embeddings for Consumer Finance Protection Bureau complaints
+</p>
+</div>
+<p>It becomes very clear in Figure <a href="embeddings.html#fig:embeddingpca">5.1</a> that stop words have not been removed, but notice that we can learn meaningful relationships in how very common words are used. Component 12 shows us how common prepositions are often used with words like <code>&quot;regarding&quot;</code>, <code>&quot;contacted&quot;</code>, and <code>&quot;called&quot;</code>, while component 9 highlights the use of <em>different</em> common words when submitting a complaint about unethical, predatory, and/or deceptive practices. Stop words do carry information, and methods like determining word embeddings can make that information usable.</p>
+<p>We created word embeddings and can explore them to understand our text dataset, but how do we use this vector representation in modeling?</p>
+</div>
+<div id="glove" class="section level2">
+<h2><span class="header-section-number">5.3</span> Use pre-trained word embeddings</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(textdata)
+
+## get GloVe embeddings</code></pre></div>
+<p><a href="https://github.com/mkearney/wactor" class="uri">https://github.com/mkearney/wactor</a></p>
+<p>Pre-trained word embeddings are trained based on very large, general purpose English language datasets. Commonly used <a href="https://code.google.com/archive/p/word2vec/">word2vec embeddings</a> are based on the Google News dataset, and commonly used <a href="https://nlp.stanford.edu/projects/glove/">GloVe embeddings</a> and <a href="https://fasttext.cc/docs/en/english-vectors.html">FastText embeddings</a> are learned from the text of Wikipedia.</p>
+</div>
+<div id="fairnessembeddings" class="section level2">
+<h2><span class="header-section-number">5.4</span> Fairness and word embeddings</h2>
+<p>Perhaps more than any of the other preprocessing steps this book has covered so far, using word embeddings opens an analysis or model up to the possibility of being influenced by systemic unfairness and bias. Embeddings are trained or learned from a large corpus of text data, and whatever human prejudice or bias exists in the corpus becomes imprinted into the vector data of the embeddings. This is true of all machine learning to some extent (models learn, reproduce, and often amplify whatever biases exist in training data) but this is literally, concretely true of word embeddings. <span class="citation">Islam, Bryson, and Narayanan (<a href="#ref-Caliskan2016">2016</a>)</span> show how the GloVe word embeddings (the same embeddings we used in Section <a href="embeddings.html#glove">5.3</a>) replicate human-like semantic biases.</p>
+<ul>
+<li>African American first names are associated with more unpleasant feelings than European American first names.</li>
+<li>Women’s first names are more associated with family and men’s first names are more associated with career.</li>
+<li>Terms associated with women are more associated with the arts and terms associated with men are more associated with science.</li>
+</ul>
+<p>Results like these have been confirmed over and over again, such as when <span class="citation">Bolukbasi et al. (<a href="#ref-Bolukbasi2016">2016</a>)</span> demonstrated gender stereotypes in how word embeddings encode professions or when Google Translate <a href="https://twitter.com/seyyedreza/status/935291317252493312">exhibited apparently sexist behavior when translating text from languages with no gendered pronouns</a>.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> <span class="citation">Garg et al. (<a href="#ref-Garg2018">2018</a>)</span> even used how bias and stereotypes can be found in word embeddings to quantify how social attitudes towards women and minorities have changed over time.</p>
+<p>EMPHASIZE AGAIN THE TRAINING DATASETS – REFERENCE FOR GENDER BALANCE ON WIKIPEDIA</p>
+<div class="rmdtip">
+<p>
+It’s safe to assume that any large corpus of language will contain latent structure reflecting the biases of the people who generated that language.
+</p>
+</div>
+<p>When embeddings with these kinds of stereotypes are used as a preprocessing step in training a predictive model, the final model can exhibit racist, sexist, or otherwise biased characteristics. <span class="citation">Speer (<a href="#ref-Speer2017">2017</a>)</span> demonstrated how using pre-trained word embeddings to train a straightforward sentiment analysis model can result in text such as</p>
+<blockquote>
+<p>“Let’s go get Italian food”</p>
+</blockquote>
+<p>being scored much more positively than text such as</p>
+<blockquote>
+<p>“Let’s go get Mexican food”</p>
+</blockquote>
+<p>because of characteristics of the text the word embeddings were trained on.</p>
+</div>
+<div id="using-word-embeddings-in-the-real-world" class="section level2">
+<h2><span class="header-section-number">5.5</span> Using word embeddings in the real world</h2>
+<p>Given these profound and fundamental challenges with word embeddings, what options are out there? First, consider not using word embeddings when building a text model. Depending on the particular analytical question you are trying to answer, another numerical representation of text data (such as word frequencies or tf-idf of single words or n-grams) may be more appropriate. Consider this option even more seriously if the model you want to train is already entangled with issues of bias, such as the sentiment analysis example in Section <a href="embeddings.html#fairnessembeddings">5.4</a>.</p>
+<p>Consider whether finding your own word embeddings, instead of relying on pre-trained embeddings such as GloVe or word2vec, may help you. Building your own vectors is likely to be a good option when the text domain you are working in is <strong>specific</strong> rather than general purpose; some examples of such domains could include customer feedback for a clothing e-commerce site, comments posted on a coding Q&amp;A site, or legal documents.</p>
+<p>Learning good quality word embeddings is only realistic when you have a large corpus of text data (say, hundreds of thousands or more documents) but if you have that much data, it is possible that embeddings learned from scratch based on your own data may not exhibit the same kind of semantic biases that exist in pre-trained word embeddings. Almost certainly there will be some kind of bias latent in any large text corpus, but when you use your own training data for learning word embeddings, you avoid the problem of <em>adding</em> historic, systemic prejudice from general purpose language datasets. You can use the same approaches discussed here to check any new embeddings for dangerous biases such as racism or sexism.</p>
+<div class="rmdnote">
+<p>
+You can use the same approaches discussed in this chapter to check any new embeddings for dangerous biases such as racism or sexism.
+</p>
+</div>
+<p>NLP researchers have also proposed methods for debiasing embeddings. <span class="citation">Bolukbasi et al. (<a href="#ref-Bolukbasi2016">2016</a>)</span> aim to remove stereotypes by postprocessing pre-trained word vectors, choosing specific sets of words that are reprojected in the vector space so that some specific bias, such as gender bias, is mitigated. This is the most established method for reducing bias in embeddings to date, although other methods have been proposed as well, such as augmenting data with counterfactuals <span class="citation">(Lu et al. <a href="#ref-Lu2018">2018</a>)</span>. Recent work <span class="citation">(Ethayarajh, Duvenaud, and Hirst <a href="#ref-Ethayarajh2019">2019</a>)</span> has explored whether the association tests used to measure bias are even useful, and under what conditions debiasing can be effective.</p>
+<p>Other researchers, such as <span class="citation">Islam, Bryson, and Narayanan (<a href="#ref-Caliskan2016">2016</a>)</span>, suggest that corrections for fairness should happen at the point of <strong>decision</strong> or action rather than earlier in the process of modeling, such as preprocessing steps like building word embeddings. The concern is that methods for debiasing word embeddings may allow the stereotypes to seep back in, and more recent work shows that this is exactly what can happen. <span class="citation">Gonen and Goldberg (<a href="#ref-Gonen2019">2019</a>)</span> highlight how pervasive and consistent gender bias is across different word embedding models, <em>even after</em> applying current debiasing methods.</p>
+</div>
+<div id="summary-4" class="section level2">
+<h2><span class="header-section-number">5.6</span> Summary</h2>
+<p>TKTKTK It’s important to keep in mind that even more advanced natural language algorithms, such as language models with transformers, also exhibit such systemic biases <span class="citation">(Sheng et al. <a href="#ref-Sheng2019">2019</a>)</span>.</p>
+
+</div>
+</div>
+
+
+
+<h3>References</h3>
+<div id="refs" class="references">
+<div id="ref-Bolukbasi2016">
+<p>Bolukbasi, Tolga, Kai-Wei Chang, James Y. Zou, Venkatesh Saligrama, and Adam Tauman Kalai. 2016. “Quantifying and Reducing Stereotypes in Word Embeddings.” <em>CoRR</em> abs/1606.06121. <a href="http://arxiv.org/abs/1606.06121" class="uri">http://arxiv.org/abs/1606.06121</a>.</p>
+</div>
+<div id="ref-Ethayarajh2019">
+<p>Ethayarajh, Kawin, David Duvenaud, and Graeme Hirst. 2019. “Understanding Undesirable Word Embedding Associations.” In <em>Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics</em>, 1696–1705. Florence, Italy: Association for Computational Linguistics. doi:<a href="https://doi.org/10.18653/v1/P19-1166">10.18653/v1/P19-1166</a>.</p>
+</div>
+<div id="ref-Garg2018">
+<p>Garg, Nikhil, Londa Schiebinger, Dan Jurafsky, and James Zou. 2018. “Word Embeddings Quantify 100 Years of Gender and Ethnic Stereotypes.” <em>Proceedings of the National Academy of Sciences</em> 115 (16). National Academy of Sciences: E3635–E3644. doi:<a href="https://doi.org/10.1073/pnas.1720347115">10.1073/pnas.1720347115</a>.</p>
+</div>
+<div id="ref-Gonen2019">
+<p>Gonen, Hila, and Yoav Goldberg. 2019. “Lipstick on a Pig: Debiasing Methods Cover up Systematic Gender Biases in Word Embeddings but Do Not Remove Them.” <em>CoRR</em> abs/1903.03862. <a href="http://arxiv.org/abs/1903.03862" class="uri">http://arxiv.org/abs/1903.03862</a>.</p>
+</div>
+<div id="ref-Caliskan2016">
+<p>Islam, Aylin Caliskan, Joanna J. Bryson, and Arvind Narayanan. 2016. “Semantics Derived Automatically from Language Corpora Necessarily Contain Human Biases.” <em>CoRR</em> abs/1608.07187. <a href="http://arxiv.org/abs/1608.07187" class="uri">http://arxiv.org/abs/1608.07187</a>.</p>
+</div>
+<div id="ref-Levy2014">
+<p>Levy, Omer, and Yoav Goldberg. 2014. “Dependency-Based Word Embeddings.” In <em>Proceedings of the 52nd Annual Meeting of the Association for Computational Linguistics (Volume 2: Short Papers)</em>, 302–8. Baltimore, Maryland: Association for Computational Linguistics. doi:<a href="https://doi.org/10.3115/v1/P14-2050">10.3115/v1/P14-2050</a>.</p>
+</div>
+<div id="ref-Lu2018">
+<p>Lu, Kaiji, Piotr Mardziel, Fangjing Wu, Preetam Amancharla, and Anupam Datta. 2018. “Gender Bias in Neural Natural Language Processing.” <em>CoRR</em> abs/1807.11714. <a href="http://arxiv.org/abs/1807.11714" class="uri">http://arxiv.org/abs/1807.11714</a>.</p>
+</div>
+<div id="ref-Moody2017">
+<p>Moody, Chris. 2017. “Stop Using Word2vec.” <em>Multithreaded</em>. StitchFix. <a href="https://multithreaded.stitchfix.com/blog/2017/10/18/stop-using-word2vec/" class="uri">https://multithreaded.stitchfix.com/blog/2017/10/18/stop-using-word2vec/</a>.</p>
+</div>
+<div id="ref-Sheng2019">
+<p>Sheng, Emily, Kai-Wei Chang, Premkumar Natarajan, and Nanyun Peng. 2019. “The Woman Worked as a Babysitter: On Biases in Language Generation.”</p>
+</div>
+<div id="ref-Speer2017">
+<p>Speer, Robyn. 2017. “How to Make a Racist Ai Without Really Trying.” <em>ConceptNet Blog</em>. <a href="http://blog.conceptnet.io/posts/2017/how-to-make-a-racist-ai-without-really-trying/" class="uri">http://blog.conceptnet.io/posts/2017/how-to-make-a-racist-ai-without-really-trying/</a>.</p>
+</div>
+<div id="ref-Vaughan2020">
+<p>Vaughan, Davis. 2020. <em>Slide: Sliding Window Functions</em>. <a href="https://github.com/DavisVaughan/slide" class="uri">https://github.com/DavisVaughan/slide</a>.</p>
+</div>
+<div id="ref-Vaughan2018">
+<p>Vaughan, Davis, and Matt Dancho. 2018. <em>Furrr: Apply Mapping Functions in Parallel Using Futures</em>. <a href="https://CRAN.R-project.org/package=furrr" class="uri">https://CRAN.R-project.org/package=furrr</a>.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="2">
+<li id="fn2"><p>Google has since <a href="https://www.blog.google/products/translate/reducing-gender-bias-google-translate/">worked to correct this problem.</a><a href="embeddings.html#fnref2">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="stemming.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="forewords.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/EmilHvitfeldt/tidy-nlp-in-R-book/edit/master/word-embeddings.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf", "_main.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

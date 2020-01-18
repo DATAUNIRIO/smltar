@@ -1,0 +1,82 @@
+# (PART) Natural Language Features {-}
+
+# Language and modeling {#language}
+
+
+
+Machine learning and deep learning models for text are put into action by computers, but they are designed and trained by human beings. As natural language processing (NLP) practitioners, we bring our understanding of what language is and how language works to the task of building language models. This is true *even when* we don't think about how language works very deeply or when our understanding is unsophisticated or inaccurate; speaking a language is not the same as understanding how it works. We can improve our machine learning models for text by heightening that understanding.
+
+Throughout the course of this book, we will discuss these kinds of improvements and how they are related to language. Data scientists involved in the everyday work of text analysis and text modeling typically don't have formal training in how language works, but there is an entire field focused on exactly that, **linguistics**.
+
+## Linguistics for text analysis
+
+@Briscoe13 provide helpful introductions to what linguistics is and how it intersects with the practical computational field of natural language processing. The broad field of linguistics includes subfields focusing on different aspects of language, which are somewhat hierarchical, as shown in Table \@ref(tab:lingsubfields).
+
+
+
+Table: (\#tab:lingsubfields)Some subfields of linguistics, moving from smaller structures to broader structures
+
+Linguistics subfield   What does it focus on?                    
+---------------------  ------------------------------------------
+Phonetics              Sounds that people use in language        
+Phonology              Systems of sounds in particular languages 
+Morphology             How words are formed                      
+Syntax                 How sentences are formed from words       
+Semantics              What sentences mean                       
+Pragmatics             How language is used in context           
+
+These fields each study a different level at which language exhibits organization. At the same time, this organization and the rules of language can be ambiguous. Beatrice Santorini, a linguist at the University of Pennsylvania, compiles examples of just such ambiguity from [news headlines](https://www.ling.upenn.edu/~beatrice/humor/headlines.html):
+
+> Include Your Children When Baking Cookies
+
+> March Planned For Next August
+
+> Enraged Cow Injures Farmer with Ax
+
+> Wives Kill Most Spouses In Chicago
+
+If you don't have knowledge about what linguists study and what they know about language, these news headlines are just hilarious. To linguists, these are hilarious *because they exhibit certain kinds of semantic ambiguity*.
+
+Notice also that the first two subfields on this list are about sounds, i.e., speech. Most linguists view speech as primary, and writing down languge as text as a technological step.
+
+<div class="rmdnote">
+<p>Remember that some language is signed, not spoken, so the description laid out here is limited.</p>
+</div>
+
+Written text is typically less creative and further from the primary language than we would wish. This points out how fundamentally limited modeling from written text is. Imagine the abstract language data we want exists in some high-dimensional latent space; we would like to extract that information using the text somehow, but it just isn't completely possible. Any model we build is inherently limited.
+
+
+## A glimpse into one area: morphology
+
+How can a deeper knowledge of how language works inform text modeling? Let's focus on **morphology**, the study of words' internal structures and how they are formed, to illustrate this. Words are medium to small in length in English; English has a moderately low ratio of morphemes (the smallest unit of language with meaning) to words while other languages like Turkish and Russian have a higher ratio of morphemes to words [@Bender13]. A related idea is the categorization of languages as either more analytic (like Mandarin or modern English, breaking up concepts into separate words) or synthetic (like Hungarian or Swahili, combining concepts into one word). 
+
+Morphology focuses on how morphemes such as prefixes, suffixes, and root words come together to form words. However, even the very question of what a word is turns out to be difficult, and not only for languages other than English. Compound words in English like "real estate" and "dining room" represent one concept but contain whitespace. The morphological characteristics of a text dataset are deeply connected to preprocessing steps like tokenization (Chapter \@ref(tokenization)), removing stop words (Chapter \@ref(stopwords)), and even stemming (Chapter \@ref(stemming)). These preprocessing steps, in turn, have dramatic effects on model results.
+
+#### TODO for Emil: add some additional discussion in this section for Danish.
+
+
+## Different languages
+
+We believe that most of the readers of this book are probably native English speakers, and most of the text used in training machine learning models is also English. However, English is by no means a dominant language globally, especially as a native or first language. As an example close to home for us, of the two authors of this book, one is a native English speaker and one is not. According to the [comprehensive and detailed Ethnologue project](https://www.ethnologue.com/language/eng), less than 20% of the world's population speaks English at all.
+
+@Bender11 provides guidance to computational linguists building models for text, for any language. One specific point she makes is to name the language being studied.
+
+> **Do** state the name of the language that is being studied, even if it's English. Acknowledging that we are working on a particular language foregrounds the possibility that the techniques may in fact be language specific. Conversely, neglecting to state that the particular data used were in, say, English, gives [a] false veneer of language-independence to the work. 
+
+This idea is simple (acknowledge that the models we build are typically language specific) but the [#BenderRule](https://twitter.com/search?q=%23BenderRule) has led to increased awareness of the limitations of the current state of this field. Our book is not geared toward academic NLP researchers developing new methods, but toward data scientists and analysts working with everyday datasets; this issue is relevant even for us. [Name the languages used in training models](https://thegradient.pub/the-benderrule-on-naming-the-languages-we-study-and-why-it-matters/), and think through what that means for their generalizability. We will practice what we preach and tell you that most of the text used for modeling in this book is English, with some text in Danish. 
+
+## Other ways text can vary
+
+The concept of differences in language is relevant for modeling beyond only the broadest language level (for example, English vs. Danish vs. German vs. Farsi). Language from a specific dialect often cannot be handled well with a model trained on data from the same language but not inclusive of that dialect. One dialect used in the United States is African American Vernacular English (AAVE). Models trained to detect toxic or hate speech are more likely to falsely identify AAVE as hate speech [@Sap19]; this is deeply troubling not only because the model is less accurate than it should be, but because it amplifies harm against an already marginalized group.
+
+Language is also changing over time. This is a known characteristic of language; if you notice the evolution of your own language, don't be depressed or angry, because it means that people are using it! Teenage girls are especially effective at language innovation, and have been for centures [@McCulloch15]; innovations spread from groups such as young women to other parts of society. This is another difference that impacts modeling.
+
+<div class="rmdtip">
+<p>Differences in language relevant for models also include the use of slang, and even the context or medium of that text.</p>
+</div>
+
+Consider two bodies of text, both mostly standard written English, but one made up of tweets and one made up of legal documents. If an NLP practitioner trains a model on the dataset of tweets to predict some characteristic of the text, it is very possible (in fact, likely, in our experience) that the model will perform poorly if applied to the dataset of legal documents. Like machine learning in general, text modeling is exquisitely sensitive to the data used for training. This is why we are somewhat skeptical of AI products such as sentiment analysis APIs, not because they *never* work well, but because they work well only when the text you need to predict from is a good match to the text such a product was trained on.
+
+## Summary 
+
+TODO
